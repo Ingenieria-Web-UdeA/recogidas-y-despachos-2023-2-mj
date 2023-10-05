@@ -3,9 +3,9 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import axios from 'axios';
 import { API_ROUTES } from '@/service/apiConfig';
 import { toast } from 'react-toastify';
-import { Spinner } from '@/components/ui/Spinner';
-import { mutate } from 'swr';
 import { User } from '@/types';
+import { PrimaryButton, SecondaryButton } from '@/components/ui/Buttons';
+import { refetchUsers } from '@/hooks/useGetUsers';
 
 interface DeleteUserDialogInterface {
   open: boolean;
@@ -28,7 +28,7 @@ const DeleteUserDialog = ({
         method: 'DELETE',
         url: `${API_ROUTES.users}/${user.id}`,
       });
-      await mutate(API_ROUTES.users);
+      await refetchUsers();
       toast.success('Usuario eliminado correctamente');
       setOpen(false);
     } catch (error) {
@@ -49,16 +49,16 @@ const DeleteUserDialog = ({
       <div className='flex flex-col items-center gap-6'>
         <h3>¿Está seguro de querer eliminar el usuario?</h3>
         <div className='flex gap-3'>
-          <button disabled={loading} onClick={deleteUser} className='primary'>
-            {loading ? <Spinner /> : <span>Confirmar</span>}
-          </button>
-          <button
-            disabled={loading}
+          <PrimaryButton
+            loading={loading}
+            onClick={deleteUser}
+            text='Confirmar'
+          />
+          <SecondaryButton
+            loading={loading}
             onClick={() => setOpen(false)}
-            className='secondary'
-          >
-            Cancelar
-          </button>
+            text='Cancelar'
+          />
         </div>
       </div>
     </Dialog>

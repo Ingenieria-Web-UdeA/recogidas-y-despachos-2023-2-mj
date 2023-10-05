@@ -1,18 +1,15 @@
-import { API_ROUTES, fetcher } from '@/service/apiConfig';
-import useSWR from 'swr';
 import Image from 'next/image';
 import { UserActions } from '@/components/users/UserActions';
-import { UsersQuery } from '@/types';
+import { useGetRoles } from '@/hooks/useGetRoles';
+import { useGetUsers } from '@/hooks/useGetUsers';
 
 const UsersPage = () => {
-  const { data, isLoading, error } = useSWR<UsersQuery>(
-    API_ROUTES.users,
-    fetcher
-  );
+  const { roles, rolesLoading } = useGetRoles();
+  const { users, usersError, usersLoading } = useGetUsers();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (usersLoading || rolesLoading) return <div>Loading...</div>;
 
-  if (error) return <div>Error al cargar los datos</div>;
+  if (usersError) return <div>Error al cargar los datos</div>;
 
   return (
     <div className='flex w-full flex-col items-center gap-3 p-10'>
@@ -24,11 +21,12 @@ const UsersPage = () => {
               <th>Imagen</th>
               <th>Nombre</th>
               <th>Correo</th>
+              <th>Rol</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {data?.users.map((user) => {
+            {users?.map((user) => {
               return (
                 <tr key={user.id}>
                   <td>
@@ -42,6 +40,9 @@ const UsersPage = () => {
                   </td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
+                  <td>
+                    {roles?.find((el) => el.id === user.roleId)?.name ?? ''}
+                  </td>
                   <td>
                     <UserActions user={user} />
                   </td>
