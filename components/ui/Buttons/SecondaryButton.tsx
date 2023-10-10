@@ -1,8 +1,13 @@
 import { ButtonProps } from './types';
 
-const SecondaryButton = ({ loading, text, onClick }: ButtonProps) => {
+const SecondaryButton = ({ loading, text, onClick, type }: ButtonProps) => {
   return (
-    <button disabled={loading} onClick={onClick} className='secondary'>
+    <button
+      type={type}
+      disabled={loading}
+      onClick={onClick}
+      className='secondary'
+    >
       {text}
     </button>
   );

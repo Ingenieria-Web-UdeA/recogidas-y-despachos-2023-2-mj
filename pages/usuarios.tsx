@@ -2,8 +2,11 @@ import Image from 'next/image';
 import { UserActions } from '@/components/users/UserActions';
 import { useGetRoles } from '@/hooks/useGetRoles';
 import { useGetUsers } from '@/hooks/useGetUsers';
+import { useState } from 'react';
+import { NewUserDialog } from '@/components/users/NewUserDialog';
 
 const UsersPage = () => {
+  const [openNewUsersDialog, setOpenNewUsersDialog] = useState(false);
   const { roles, rolesLoading } = useGetRoles();
   const { users, usersError, usersLoading } = useGetUsers();
 
@@ -13,7 +16,12 @@ const UsersPage = () => {
 
   return (
     <div className='flex w-full flex-col items-center gap-3 p-10'>
-      <h1>Gestión de usuarios</h1>
+      <div className='flex w-full flex-col items-center gap-5'>
+        <h1>Gestión de usuarios</h1>
+        <button onClick={() => setOpenNewUsersDialog(true)} className='primary'>
+          Crear nuevo usuario
+        </button>
+      </div>
       <section className='flex justify-center'>
         <table cellSpacing='0'>
           <thead>
@@ -31,7 +39,7 @@ const UsersPage = () => {
                 <tr key={user.id}>
                   <td>
                     <Image
-                      src={user.image}
+                      src={user?.image ?? '/media/default-user.jpg'}
                       width={40}
                       height={40}
                       alt='User image'
@@ -52,6 +60,10 @@ const UsersPage = () => {
           </tbody>
         </table>
       </section>
+      <NewUserDialog
+        open={openNewUsersDialog}
+        setOpen={setOpenNewUsersDialog}
+      />
     </div>
   );
 };
