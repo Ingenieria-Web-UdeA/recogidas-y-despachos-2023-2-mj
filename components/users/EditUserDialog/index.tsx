@@ -35,12 +35,7 @@ const EditUserDialog = ({ open, setOpen, user }: EditUserDialogInterface) => {
         await axios.request({
           method: 'PUT',
           url: `${API_ROUTES.users}/${user.id}`,
-          data: { data: userInformation.name, column: 'name' },
-        });
-        await axios.request({
-          method: 'PUT',
-          url: `${API_ROUTES.users}/${user.id}`,
-          data: { data: userInformation.roleId, column: 'roleId' },
+          data: { name: userInformation.name, roleId: userInformation.roleId },
         });
         await refetchUsers();
         toast.success('Usuario actualizado correctamente');
