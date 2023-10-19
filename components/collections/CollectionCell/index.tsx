@@ -7,16 +7,14 @@ import { toast } from 'react-toastify';
 import { mutate } from 'swr';
 import { Spinner } from '@/components/ui/Spinner';
 import { Tooltip } from '@/components/ui/Tooltip';
+import { useDateFilters } from '@/atoms/dateFilters';
 
 interface CollectionCellProps {
   collection: Collection;
-  dateFilters: {
-    year: number;
-    month: string;
-  };
 }
 
-const CollectionCell = ({ collection, dateFilters }: CollectionCellProps) => {
+const CollectionCell = ({ collection }: CollectionCellProps) => {
+  const { dateFilters } = useDateFilters();
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
   const [bunches, setBunches] = useState(collection.bunches ?? 0);
@@ -31,7 +29,7 @@ const CollectionCell = ({ collection, dateFilters }: CollectionCellProps) => {
       });
       await mutate(
         `${API_ROUTES.collections}?year=${dateFilters.year}&month=${
-          parseInt(dateFilters.month) + 1
+          dateFilters.month + 1
         }`
       );
       toast.success('Recogida actualizada correctamente');

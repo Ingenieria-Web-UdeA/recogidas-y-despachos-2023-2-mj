@@ -1,18 +1,13 @@
+import { useDateFilters } from '@/atoms/dateFilters';
 import { API_ROUTES, fetcher } from '@/service/apiConfig';
 import { CollectionsQuery } from '@/types';
 import useSWR from 'swr';
 
-interface UseGetCollectionsProps {
-  dateFilters: {
-    year: number;
-    month: string;
-  };
-}
-
-const useGetCollections = ({ dateFilters }: UseGetCollectionsProps) => {
+const useGetCollections = () => {
+  const { dateFilters } = useDateFilters();
   const { data, error, isLoading } = useSWR<CollectionsQuery>(
     `${API_ROUTES.collections}?year=${dateFilters.year}&month=${
-      parseInt(dateFilters.month) + 1
+      dateFilters.month + 1
     }`,
     fetcher
   );

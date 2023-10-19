@@ -3,12 +3,9 @@ import { DateFilters } from '@/components/collections/DateFilters';
 import { useGetCollections } from '@/hooks/useGetCollections';
 import { useGetLots } from '@/hooks/useGetLots';
 import _ from 'lodash';
-import { useState } from 'react';
 
 const CollectionsPage = () => {
-  const [dateFilters, setDateFilters] = useState({ year: 2021, month: '1' });
-
-  const { collections, isLoading } = useGetCollections({ dateFilters });
+  const { collections, isLoading } = useGetCollections();
 
   const { lots } = useGetLots();
 
@@ -22,10 +19,7 @@ const CollectionsPage = () => {
       <section className=''>
         <div className='flex flex-col items-center gap-3'>
           <h1>Recogidas Diarias</h1>
-          <DateFilters
-            dateFilters={dateFilters}
-            setDateFilters={setDateFilters}
-          />
+          <DateFilters />
         </div>
       </section>
       <section className='flex justify-center w-full'>
@@ -46,10 +40,7 @@ const CollectionsPage = () => {
                   {collectionsByDate[date].map((collection) => {
                     return (
                       <td key={collection.id} className='max-w-[80px]'>
-                        <CollectionCell
-                          dateFilters={dateFilters}
-                          collection={collection}
-                        />
+                        <CollectionCell collection={collection} />
                       </td>
                     );
                   })}

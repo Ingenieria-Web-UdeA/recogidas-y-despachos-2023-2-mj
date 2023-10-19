@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useDateFilters } from '@/atoms/dateFilters';
 
 const YEARS = [2021, 2022, 2023];
 const MONTHS = {
@@ -16,20 +16,9 @@ const MONTHS = {
   '11': 'Diciembre',
 };
 
-interface DateFiltersProps {
-  dateFilters: {
-    year: number;
-    month: string;
-  };
-  setDateFilters: Dispatch<
-    SetStateAction<{
-      year: number;
-      month: string;
-    }>
-  >;
-}
+const DateFilters = () => {
+  const { dateFilters, setDateFilters } = useDateFilters();
 
-const DateFilters = ({ dateFilters, setDateFilters }: DateFiltersProps) => {
   return (
     <div className='flex gap-3'>
       <select
@@ -45,7 +34,7 @@ const DateFilters = ({ dateFilters, setDateFilters }: DateFiltersProps) => {
       <select
         value={dateFilters.month}
         onChange={(e) => {
-          setDateFilters({ ...dateFilters, month: e.target.value });
+          setDateFilters({ ...dateFilters, month: parseInt(e.target.value) });
         }}
       >
         {Object.keys(MONTHS).map((month: string) => {
