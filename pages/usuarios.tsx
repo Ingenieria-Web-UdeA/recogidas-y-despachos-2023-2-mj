@@ -4,6 +4,7 @@ import { useGetRoles } from '@/hooks/useGetRoles';
 import { useGetUsers } from '@/hooks/useGetUsers';
 import { useState } from 'react';
 import { NewUserDialog } from '@/components/users/NewUserDialog';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 const UsersPage = () => {
   const [openNewUsersDialog, setOpenNewUsersDialog] = useState(false);
@@ -15,56 +16,61 @@ const UsersPage = () => {
   if (usersError) return <div>Error al cargar los datos</div>;
 
   return (
-    <div className='flex w-full flex-col items-center gap-3 p-10'>
-      <div className='flex w-full flex-col items-center gap-5'>
-        <h1>Gestión de usuarios</h1>
-        <button onClick={() => setOpenNewUsersDialog(true)} className='primary'>
-          Crear nuevo usuario
-        </button>
+    <ProtectedRoute roleName='ADMIN'>
+      <div className='flex w-full flex-col items-center gap-3 p-10'>
+        <div className='flex w-full flex-col items-center gap-5'>
+          <h1>Gestión de usuarios</h1>
+          <button
+            onClick={() => setOpenNewUsersDialog(true)}
+            className='primary'
+          >
+            Crear nuevo usuario
+          </button>
+        </div>
+        <section className='flex justify-center'>
+          <table cellSpacing='0'>
+            <thead>
+              <tr>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users?.map((user) => {
+                return (
+                  <tr key={user.id}>
+                    <td>
+                      <Image
+                        src={user?.image ?? '/media/default-user.jpg'}
+                        width={40}
+                        height={40}
+                        alt='User image'
+                        className='rounded-full'
+                      />
+                    </td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>
+                      {roles?.find((el) => el.id === user.roleId)?.name ?? ''}
+                    </td>
+                    <td>
+                      <UserActions user={user} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+        <NewUserDialog
+          open={openNewUsersDialog}
+          setOpen={setOpenNewUsersDialog}
+        />
       </div>
-      <section className='flex justify-center'>
-        <table cellSpacing='0'>
-          <thead>
-            <tr>
-              <th>Imagen</th>
-              <th>Nombre</th>
-              <th>Correo</th>
-              <th>Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.map((user) => {
-              return (
-                <tr key={user.id}>
-                  <td>
-                    <Image
-                      src={user?.image ?? '/media/default-user.jpg'}
-                      width={40}
-                      height={40}
-                      alt='User image'
-                      className='rounded-full'
-                    />
-                  </td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    {roles?.find((el) => el.id === user.roleId)?.name ?? ''}
-                  </td>
-                  <td>
-                    <UserActions user={user} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
-      <NewUserDialog
-        open={openNewUsersDialog}
-        setOpen={setOpenNewUsersDialog}
-      />
-    </div>
+    </ProtectedRoute>
   );
 };
 

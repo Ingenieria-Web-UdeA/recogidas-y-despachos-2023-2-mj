@@ -1,9 +1,12 @@
+import { PrivateComponent } from '@/components/PrivateComponent';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Navbar = () => {
+  const { data } = useSession();
   const [isToggleOpen, setIsToggleOpen] = useState(false);
 
   return (
@@ -83,9 +86,14 @@ const Navbar = () => {
                   : 'invisible opacity-0'
               }`}
             >
+              <PrivateComponent roleName='ADMIN'>
+                <NavbarLink href='/indicadores' title='Indicadores' />
+              </PrivateComponent>
               <NavbarLink href='/envios' title='Envíos' />
               <NavbarLink href='/recogidas' title='Recogidas' />
-              <NavbarLink href='/usuarios' title='Usuarios' />
+              <PrivateComponent roleName='ADMIN'>
+                <NavbarLink href='/usuarios' title='Usuarios' />
+              </PrivateComponent>
               <NavbarLink href='/lotes' title='Lotes' />
             </ul>
             <div className='ml-auto flex items-center px-6 lg:ml-0 lg:p-0'>
@@ -95,7 +103,7 @@ const Navbar = () => {
                 className='relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white'
               >
                 <Image
-                  src='https://s.gravatar.com/avatar/f04bb6129f53bef63dd289da7868259b?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fds.png'
+                  src={data?.user?.image ?? ''}
                   alt='user name'
                   title='user name'
                   width={40}
