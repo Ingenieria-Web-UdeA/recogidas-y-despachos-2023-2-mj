@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { User } from '@prisma/client';
 import prisma from '@/service/prisma';
+import { checkProtectedApi } from '@/utils/checkServerSession';
 
 type Data = {
   users?: User[];
@@ -14,6 +15,8 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
+    await checkProtectedApi(req, res, 'ADMIN');
+
     if (req.method === 'GET') {
       const users = await prisma.user.findMany({
         orderBy: {

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/service/prisma';
+import { checkProtectedApi } from '@/utils/checkServerSession';
 
 interface summaryData {
   totalRacimos: number;
@@ -12,6 +13,8 @@ const shipmentSummaryApi = async (
   res: NextApiResponse
 ) => {
   if (req.method === 'GET') {
+    await checkProtectedApi(req, res, 'ADMIN');
+
     const { year, month } = req.query;
 
     const summaryData = (await prisma.$queryRaw`
