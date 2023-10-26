@@ -5,6 +5,14 @@ import { useGetCollections } from '@/hooks/useGetCollections';
 import { useGetLots } from '@/hooks/useGetLots';
 import _ from 'lodash';
 
+const CollectionsPageWrapper = () => {
+  return (
+    <PrivateRoute>
+      <CollectionsPage />
+    </PrivateRoute>
+  );
+};
+
 const CollectionsPage = () => {
   const { collections, isLoading } = useGetCollections();
 
@@ -16,45 +24,43 @@ const CollectionsPage = () => {
   const filteredCollections = Object.keys(collectionsByDate);
 
   return (
-    <PrivateRoute>
-      <div className='flex flex-col items-center gap-3 p-10'>
-        <section className=''>
-          <div className='flex flex-col items-center gap-3'>
-            <h1>Recogidas Diarias</h1>
-            <DateFilters />
-          </div>
-        </section>
-        <section className='flex justify-center w-full'>
-          <table cellSpacing={0} className=''>
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                {lots?.map((lot) => {
-                  return <th key={lot.id}>{lot.name ?? ''}</th>;
-                })}
-              </tr>
-            </thead>
-            <tbody>
-              {filteredCollections.map((date) => {
-                return (
-                  <tr key={date}>
-                    <td>{new Date(date).toLocaleDateString()}</td>
-                    {collectionsByDate[date].map((collection) => {
-                      return (
-                        <td key={collection.id} className='max-w-[80px]'>
-                          <CollectionCell collection={collection} />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
+    <div className='flex flex-col items-center gap-3 p-10'>
+      <section className=''>
+        <div className='flex flex-col items-center gap-3'>
+          <h1>Recogidas Diarias</h1>
+          <DateFilters />
+        </div>
+      </section>
+      <section className='flex justify-center w-full'>
+        <table cellSpacing={0} className=''>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              {lots?.map((lot) => {
+                return <th key={lot.id}>{lot.name ?? ''}</th>;
               })}
-            </tbody>
-          </table>
-        </section>
-      </div>
-    </PrivateRoute>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredCollections.map((date) => {
+              return (
+                <tr key={date}>
+                  <td>{new Date(date).toLocaleDateString()}</td>
+                  {collectionsByDate[date].map((collection) => {
+                    return (
+                      <td key={collection.id} className='max-w-[80px]'>
+                        <CollectionCell collection={collection} />
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
+    </div>
   );
 };
 
-export default CollectionsPage;
+export default CollectionsPageWrapper;

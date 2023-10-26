@@ -1,13 +1,19 @@
 import { PrivateRoute } from '@/components/PrivateRoute';
 
-const ProfilePage = () => {
+const ProfilePageWrapper = () => {
   return (
     <PrivateRoute>
-      <div>
-        <h1>Perfil</h1>
-      </div>
+      <ProfilePage />
     </PrivateRoute>
   );
 };
 
-export default ProfilePage;
+const ProfilePage = () => {
+  return (
+    <div>
+      <h1>Perfil</h1>
+    </div>
+  );
+};
+
+export default ProfilePageWrapper;

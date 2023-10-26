@@ -1,11 +1,15 @@
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 
-const IndicatorsPage = () => {
+const IndicatorsPageWrapper = () => {
   return (
     <ProtectedRoute roleName='ADMIN'>
-      <div>Indicadores</div>
+      <IndicatorsPage />
     </ProtectedRoute>
   );
 };
 
-export default IndicatorsPage;
+const IndicatorsPage = () => {
+  return <div>Indicadores</div>;
+};
+
+export default IndicatorsPageWrapper;

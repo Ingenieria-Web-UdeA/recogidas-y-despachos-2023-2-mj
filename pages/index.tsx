@@ -1,3 +1,4 @@
+import { PrivateComponent } from '@/components/PrivateComponent';
 import { PrimaryButton } from '@/components/ui/Buttons';
 import { NavigationCard } from '@/components/ui/NavigationCard';
 import { useSession, signIn } from 'next-auth/react';
@@ -24,11 +25,13 @@ const Home = () => {
             description='Crear y visualizar envíos'
             href='/envios'
           />
-          <NavigationCard
-            title='Usuarios'
-            description='Gestionar los usuarios de la plataforma'
-            href='/usuarios'
-          />
+          <PrivateComponent roleName='ADMIN'>
+            <NavigationCard
+              title='Usuarios'
+              description='Gestionar los usuarios de la plataforma'
+              href='/usuarios'
+            />
+          </PrivateComponent>
         </div>
       ) : (
         <div>
