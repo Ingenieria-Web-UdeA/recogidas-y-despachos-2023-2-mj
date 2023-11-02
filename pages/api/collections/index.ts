@@ -33,7 +33,6 @@ const collectionsApi = async (
     ORDER BY 
         c."collectionDate" ASC, 
         CAST(REPLACE(l."name", 'Lote ', '') AS INT) ASC;
-    
     `;
 
     return res.status(200).json({ collections });

@@ -1,10 +1,10 @@
 import prisma from '@/service/prisma';
 import { checkPrivateApi } from '@/utils/checkServerSession';
-import { Shipment } from '@prisma/client';
+import { Enum_RoleName } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 interface ResponseData {
-  shipments?: Shipment[];
+  shipments?: unknown;
   message?: string;
 }
 
@@ -12,7 +12,7 @@ const shipmentsApi = async (
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) => {
-  await checkPrivateApi(req, res);
+  const roleName = await checkPrivateApi(req, res);
 
   if (req.method === 'GET') {
     const { year, month } = req.query;
@@ -34,6 +34,14 @@ const shipmentsApi = async (
       },
       orderBy: {
         shipmentDate: 'asc',
+      },
+      select: {
+        id: true,
+        shippedBunches: true,
+        shipmentDate: true,
+        bunchWeight: true,
+        deliveredWeight: true,
+        userId: roleName === Enum_RoleName.ADMIN,
       },
     });
 

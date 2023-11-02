@@ -27,3 +27,14 @@ export interface ShipmentSummaryQuery {
     pesoPromedio: number;
   };
 }
+
+export interface CollectionsIndicator {
+  year: number;
+  month: number;
+  lote: string;
+  total: number;
+}
+
+export interface CollectionsIndicatorsQuery {
+  indicators: CollectionsIndicator[];
+}

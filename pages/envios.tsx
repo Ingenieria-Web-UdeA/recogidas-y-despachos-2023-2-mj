@@ -3,6 +3,7 @@ import { PrivateRoute } from '@/components/PrivateRoute';
 import { DateFilters } from '@/components/collections/DateFilters';
 import { DataCard } from '@/components/shipments/DataCard';
 import { useGetShipments } from '@/hooks/useGetShipments';
+import { useGetUsers } from '@/hooks/useGetUsers';
 
 const ShipmentsPageWrapper = () => {
   return (
@@ -13,6 +14,7 @@ const ShipmentsPageWrapper = () => {
 };
 
 const ShipmentsPage = () => {
+  const { users } = useGetUsers();
   const { shipments, summaryData, isLoading } = useGetShipments();
 
   if (isLoading) return <div>Loading...</div>;
@@ -45,6 +47,9 @@ const ShipmentsPage = () => {
                 <th>Racimos despachados</th>
                 <th>Peso por racimo</th>
                 <th>Kilos entregados en planta</th>
+                <PrivateComponent roleName='ADMIN'>
+                  <th>Usuario</th>
+                </PrivateComponent>
               </tr>
             </thead>
             <tbody>
@@ -56,6 +61,11 @@ const ShipmentsPage = () => {
                     <td>{shipment.shippedBunches}</td>
                     <td>{shipment.bunchWeight.toFixed(2)}</td>
                     <td>{shipment.deliveredWeight}</td>
+                    <PrivateComponent roleName='ADMIN'>
+                      <td>
+                        {users?.find((usr) => usr.id === shipment.userId)?.name}
+                      </td>
+                    </PrivateComponent>
                   </tr>
                 );
               })}
