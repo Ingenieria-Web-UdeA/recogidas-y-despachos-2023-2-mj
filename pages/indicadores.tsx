@@ -5,7 +5,6 @@ import {
   Chart,
   Series,
   ArgumentAxis,
-  CommonSeriesSettings,
   Export,
   Legend,
   Margin,
@@ -101,7 +100,13 @@ const IndicatorsPage = () => {
   );
 };
 
-const customizeTooltip = (pointInfo) => {
+interface PointInfo {
+  argumentText: string;
+  seriesName: string;
+  total: number;
+}
+
+const customizeTooltip = (pointInfo: PointInfo) => {
   return {
     html: `
     <div class='flex items-center justify-center gap-3'>
