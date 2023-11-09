@@ -38,3 +38,15 @@ export interface CollectionsIndicator {
 export interface CollectionsIndicatorsQuery {
   indicators: CollectionsIndicator[];
 }
+
+export interface ProfileQuery {
+  userProfile: {
+    email: string;
+    image: string;
+    profile: {
+      document: string;
+      phoneNumber: string;
+      image: string;
+    };
+  };
+}

@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['s.gravatar.com', 'lh3.googleusercontent.com'],
+    domains: [
+      's.gravatar.com',
+      'lh3.googleusercontent.com',
+      `${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com`,
+    ],
   },
 };
 

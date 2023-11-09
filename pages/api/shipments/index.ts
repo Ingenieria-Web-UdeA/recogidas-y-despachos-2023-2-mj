@@ -12,7 +12,7 @@ const shipmentsApi = async (
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) => {
-  const roleName = await checkPrivateApi(req, res);
+  const { roleName } = await checkPrivateApi(req, res);
 
   if (req.method === 'GET') {
     const { year, month } = req.query;

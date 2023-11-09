@@ -1,22 +1,12 @@
+import { s3 } from '@/service/s3';
 import { checkPrivateApi } from '@/utils/checkServerSession';
 import { NextApiRequest, NextApiResponse } from 'next';
-import AWS from 'aws-sdk';
-
-AWS.config.update({
-  region: process.env.AWS_REGION || '',
-  credentials: new AWS.Credentials({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  }),
-});
 
 const fileUploadApi = async (req: NextApiRequest, res: NextApiResponse) => {
-  //   await checkPrivateApi(req, res);
+  const { email } = await checkPrivateApi(req, res);
 
   if (req.method === 'POST') {
-    const { fileName, fileType, email } = req.body;
-
-    const s3 = new AWS.S3();
+    const { fileName, fileType } = req.body;
 
     const postData = s3.createPresignedPost({
       Bucket: process.env.AWS_BUCKET_NAME || '',

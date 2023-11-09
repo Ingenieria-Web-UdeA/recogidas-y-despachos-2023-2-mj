@@ -1,12 +1,12 @@
 import { PrivateComponent } from '@/components/PrivateComponent';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
+import { UserProfileImage } from '@/components/UserProfileImage';
+import { useGetUserProfile } from '@/hooks/useGetUserProfile';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 const Navbar = () => {
-  const { data } = useSession();
+  const { userProfile } = useGetUserProfile();
   const [isToggleOpen, setIsToggleOpen] = useState(false);
 
   return (
@@ -102,13 +102,8 @@ const Navbar = () => {
                 href='/perfil'
                 className='relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white'
               >
-                <Image
-                  src={data?.user?.image ?? ''}
-                  alt='user name'
-                  title='user name'
-                  width={40}
-                  height={40}
-                  className='max-w-full rounded-full'
+                <UserProfileImage
+                  image={userProfile?.profile.image ?? userProfile?.image}
                 />
               </Link>
               {/*        <!-- End Avatar --> */}

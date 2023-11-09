@@ -7,10 +7,10 @@ const checkPrivateApi = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
-    return res.status(401).json({ message: 'Unauthorized' });
+    res.status(401).json({ message: 'Unauthorized' });
   }
 
-  return session.user.role?.name;
+  return { roleName: session?.user.role?.name, email: session?.user.email };
 };
 
 const checkProtectedApi = async (

@@ -1,4 +1,4 @@
-import { Collection } from '@/types';
+import { Collection } from '@prisma/client';
 import { useState } from 'react';
 import { MdCheckCircleOutline, MdOutlineCancel } from 'react-icons/md';
 import axios from 'axios';

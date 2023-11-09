@@ -8,6 +8,8 @@ const API_ROUTES = {
   shipments: `${SERVER_URL}/shipments`,
   shipmentSummary: `${SERVER_URL}/shipments/summary`,
   collectionsIndicators: `${SERVER_URL}/collections/indicators`,
+  profile: `${SERVER_URL}/users/profile`,
+  fileUpload: `${SERVER_URL}/file-upload`,
 };
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
